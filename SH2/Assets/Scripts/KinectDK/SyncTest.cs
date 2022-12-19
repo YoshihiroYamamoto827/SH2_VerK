@@ -47,12 +47,7 @@ public class SyncTest : MonoBehaviour
         BoneQua = new Quaternion[Define.BoneNum];
         ATscript = GameObject.Find("SimpleSkeleton").GetComponent<AvatarTracker>();
 
-
         wsopen = false;
-        TargetObj = GameObject.Find("Cube");
-
-        ObjPosB = Vector3.zero;
-        ObjPosA = Vector3.zero;
     }
 
     private void Update()

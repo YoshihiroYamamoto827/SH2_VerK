@@ -1094,6 +1094,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleSkeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 7127512057113049352, guid: 28f88c8215bd10c469a0d0ce4a66d9bc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7152329407384879065, guid: 28f88c8215bd10c469a0d0ce4a66d9bc, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.39722258
