@@ -36,7 +36,7 @@ public class SyncTest : MonoBehaviour
     bool wsopen;
     int i, j;
 
-    AvatarTracker ATscript;
+    public AvatarTracker ATscript;
 
     private void Start()
     {
@@ -45,7 +45,7 @@ public class SyncTest : MonoBehaviour
         quaar.qualist = new QuaList[Define.BoneNum];
         for(i = 0; i < Define.BoneNum; i++) quaar.qualist[i] = new QuaList();
         BoneQua = new Quaternion[Define.BoneNum];
-        ATscript = GameObject.Find("SimpleSkeleton").GetComponent<AvatarTracker>();
+        //ATscript = GameObject.Find("SimpleSkeleton").GetComponent<AvatarTracker>();
 
         wsopen = false;
     }
@@ -57,7 +57,7 @@ public class SyncTest : MonoBehaviour
 
     public void SyncStart()
     {
-        ws = new WebSocket("ws://localhost:8080/ws");
+        ws = new WebSocket("ws://localhost:3000/");
 
         ws.OnOpen += (sender, e) =>
         {

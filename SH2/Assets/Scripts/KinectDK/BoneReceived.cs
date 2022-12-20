@@ -59,7 +59,7 @@ public class BoneReceived : MonoBehaviour
             ws.OnMessage += (sender, e) =>
             {
                 JsonUtility.FromJsonOverwrite(e.ToString(), quaar);
-                Debug.Log(quaar.qualist);
+                
 
                 foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
                 {
@@ -71,7 +71,7 @@ public class BoneReceived : MonoBehaviour
                     BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
 
                     AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatar‚ÌŠeŠÖß‚É‰ñ“]‚ğ“–‚Ä‚ñ‚Å‚¢‚«‚Ü‚·B
-                    Debug.Log(BoneQua[(int)jointId]);
+                    //Debug.Log(BoneQua[(int)jointId]);
                 }
             };
         }
