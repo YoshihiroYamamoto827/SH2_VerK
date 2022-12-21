@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
+using System.Threading.Tasks;
 
 
 
@@ -48,14 +49,30 @@ public class SyncTest : MonoBehaviour
         //ATscript = GameObject.Find("SimpleSkeleton").GetComponent<AvatarTracker>();
 
         wsopen = false;
+
+        var SendServer = Task.Run(() =>
+        {
+            SyncStart();
+
+            while (true)
+            {
+                BoneQua = ATscript.SendBoneQua();
+                for (i = 0; i < Define.BoneNum; i++)
+                {
+                    quaar.qualist[i].X = double.Parse((BoneQua[i].x).ToString("f3"));
+                    quaar.qualist[i].Y = double.Parse((BoneQua[i].y).ToString("f3"));
+                    quaar.qualist[i].Z = double.Parse((BoneQua[i].z).ToString("f3"));
+                    quaar.qualist[i].W = double.Parse((BoneQua[i].w).ToString("f3"));
+                }
+
+                var json = JsonUtility.ToJson(quaar);
+
+                ws.Send(json);
+            }
+        });
     }
 
-    private void Update()
-    {
-        if (wsopen) SendServer();
-    }
-
-    public void SyncStart()
+    private void SyncStart()
     {
         ws = new WebSocket("ws://localhost:3000/");
 
@@ -66,37 +83,15 @@ public class SyncTest : MonoBehaviour
 
         ws.OnMessage += (sender, e) =>
         {
-            Debug.Log(e.Data);
+            
         };
 
         ws.Connect();
         wsopen = true;
     }
 
-    public void SendServer()
-    {
-        BoneQua = ATscript.SendBoneQua();
-        for (i = 0; i < Define.BoneNum; i++)
-        {
-            quaar.qualist[i].X = double.Parse((BoneQua[i].x).ToString("f3"));
-            quaar.qualist[i].Y = double.Parse((BoneQua[i].y).ToString("f3"));
-            quaar.qualist[i].Z = double.Parse((BoneQua[i].z).ToString("f3"));
-            quaar.qualist[i].W = double.Parse((BoneQua[i].w).ToString("f3"));
-        }
-
-        var json = JsonUtility.ToJson(quaar);
-
-        ws.Send(json);
-    }
-
     private void OnDestroy()
     {
         ws.Close();
-    }
-
-    private double adjustdigit(double qua1)
-    {
-        double qua2 = double.Parse(qua1.ToString("f3"));
-        return qua2;
     }
 }

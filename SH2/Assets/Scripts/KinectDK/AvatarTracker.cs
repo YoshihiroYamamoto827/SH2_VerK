@@ -58,7 +58,7 @@ public class AvatarTracker : MonoBehaviour
                         var adjustedQuaternion = quaternion * this.GetQuaternionOffset(jointId); // 関節によって上方向が異なるので調整します。
                         this.animator.GetBoneTransform(pair.Key).rotation = adjustedQuaternion; // HumanoidAvatarの各関節に回転を当て込んでいきます。
                         BoneQua[(int)jointId] = adjustedQuaternion;
-                        Debug.Log(BoneQua[(int)jointId]);
+                        //Debug.Log(BoneQua[(int)jointId]);
                     }
 
                     var jointPos = frame.GetBodySkeleton(0).GetJoint(JointId.Pelvis).Position; // トラッキングした腰の位置をアバターの位置情報に当て込みます。

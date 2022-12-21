@@ -53,7 +53,7 @@ public class ServerCsharp : MonoBehaviour
         protected override void OnMessage(MessageEventArgs e)
         {
             var JSONarr = JsonUtility.ToJson(e);
-            Debug.Log(e.Data);
+            //Debug.Log(e.Data);
             Sessions.Broadcast(e.Data);
         }
     }

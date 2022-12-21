@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
+using System.Threading.Tasks;
 
 public class ClientCsharp : MonoBehaviour
 {
@@ -40,7 +41,6 @@ public class ClientCsharp : MonoBehaviour
         //アバターのボーンのTransformを取得
         AvatarAnimator = GameObject.Find("SimpleSkeleton2").GetComponent<Animator>();
 
-
         //サーバから受信する用のJSONデータの形式と回転を格納する配列を宣言
         quaar = new QuaAr();
         quaar.qualist = new QuaList[Define.BoneNum];
@@ -49,31 +49,39 @@ public class ClientCsharp : MonoBehaviour
 
         wsopen = false;
 
+        var ReceivedServer = Task.Run(() =>
+        {
+            SyncStart();
+
+            while (true)
+            {
+                ws.OnMessage += (sender, e) =>
+                {
+                    //Debug.Log(e.Data);
+                    quaar = JsonUtility.FromJson<QuaAr>(e.ToString());
+                    Debug.Log(quaar.qualist[1]);
+                    foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
+                    {
+                        var jointId = pair.Value;
+
+                        BoneQua[jointId].x = (float)quaar.qualist[jointId].X;
+                        BoneQua[jointId].y = (float)quaar.qualist[jointId].Y;
+                        BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
+                        BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
+
+                        AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarの各関節に回転を当て込む
+                    }
+
+                };
+            }
+                
+        });
+
     }
 
     private void Update()
     {
-        if (wsopen)
-        {
-            ws.OnMessage += (sender, e) =>
-            {
-                Debug.Log(e.Data);
-                JsonUtility.FromJsonOverwrite(e.ToString(), quaar);
-
-                foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
-                {
-                    var jointId = pair.Value;
-
-                    BoneQua[jointId].x = (float)quaar.qualist[jointId].X;
-                    BoneQua[jointId].y = (float)quaar.qualist[jointId].Y;
-                    BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
-                    BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
-
-                    AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarの各関節に回転を当て込んでいきます。
-                    //Debug.Log(BoneQua[(int)jointId]);
-                }
-            };
-        }
+        
 
     }
 
