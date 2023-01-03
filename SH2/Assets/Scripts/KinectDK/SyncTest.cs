@@ -37,7 +37,8 @@ public class SyncTest : MonoBehaviour
     bool wsopen;
     int i, j;
 
-    public AvatarTracker ATscript;
+    //public AvatarTracker ATscript;
+    public TestTracker ATscript;
 
     private void Start()
     {
@@ -63,6 +64,7 @@ public class SyncTest : MonoBehaviour
                     quaar.qualist[i].Y = double.Parse((BoneQua[i].y).ToString("f3"));
                     quaar.qualist[i].Z = double.Parse((BoneQua[i].z).ToString("f3"));
                     quaar.qualist[i].W = double.Parse((BoneQua[i].w).ToString("f3"));
+                    //Debug.Log(quaar.qualist[i].X);
                 }
 
                 var json = JsonUtility.ToJson(quaar);

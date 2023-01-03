@@ -49,7 +49,13 @@ public class ClientCsharp : MonoBehaviour
 
         wsopen = false;
 
-        var ReceivedServer = Task.Run(() =>
+        Task B = BoneReceived();
+
+    }
+
+    private async Task BoneReceived()
+    {
+        await Task.Run(() =>
         {
             SyncStart();
 
@@ -57,9 +63,9 @@ public class ClientCsharp : MonoBehaviour
             {
                 ws.OnMessage += (sender, e) =>
                 {
-                    //Debug.Log(e.Data);
-                    quaar = JsonUtility.FromJson<QuaAr>(e.ToString());
-                    Debug.Log(quaar.qualist[1]);
+                    Debug.Log(e.Data);
+                    JsonUtility.FromJsonOverwrite(e.Data.ToString(),quaar);
+                    Debug.Log(quaar.qualist[1].X);
                     foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
                     {
                         var jointId = pair.Value;
@@ -68,15 +74,13 @@ public class ClientCsharp : MonoBehaviour
                         BoneQua[jointId].y = (float)quaar.qualist[jointId].Y;
                         BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
                         BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
-
                         AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarÇÃäeä÷êﬂÇ…âÒì]ÇìñÇƒçûÇﬁ
                     }
 
                 };
             }
-                
-        });
 
+        });
     }
 
     private void Update()
