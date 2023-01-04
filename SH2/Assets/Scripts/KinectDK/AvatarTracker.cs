@@ -15,6 +15,8 @@ public class AvatarTracker : MonoBehaviour
     public Quaternion[] BoneQua;
     SyncTest sync;
     public int o = 0;
+    private System.Numerics.Vector3 jointPos;
+    private Vector3 adjustPos;
 
     void Awake()
     {
@@ -61,8 +63,9 @@ public class AvatarTracker : MonoBehaviour
                         //Debug.Log(BoneQua[(int)jointId]);
                     }
 
-                    var jointPos = frame.GetBodySkeleton(0).GetJoint(JointId.Pelvis).Position; // トラッキングした腰の位置をアバターの位置情報に当て込みます。
-                    this.avatarRoot.transform.localPosition = new Vector3(-jointPos.X / 500, -jointPos.Y / 500, -jointPos.Z / 1000); // そのままだと動きすぎるので調整。
+                    jointPos = frame.GetBodySkeleton(0).GetJoint(JointId.Pelvis).Position; // トラッキングした腰の位置をアバターの位置情報に当て込みます。
+                    adjustPos = new Vector3(-jointPos.X / 500, -jointPos.Y / 500, -jointPos.Z / 1000); // そのままだと動きすぎるので調整。
+                    this.avatarRoot.transform.localPosition = adjustPos;
                 }
             }
         }

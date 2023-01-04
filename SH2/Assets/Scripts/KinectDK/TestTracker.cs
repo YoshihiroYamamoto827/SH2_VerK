@@ -12,6 +12,8 @@ public class TestTracker : MonoBehaviour
     public Quaternion[] BoneQua;
     SyncTest sync;
     public int o = 0;
+    private System.Numerics.Vector3 jointPos;
+    private Vector3 adjustPos;
 
     void Awake()
     {
@@ -34,6 +36,8 @@ public class TestTracker : MonoBehaviour
                 {
                     BoneQua[i] = new Quaternion(0, 1, 2, 3);
                 }
+                jointPos = new System.Numerics.Vector3(1, 1, 1);
+                adjustPos = new Vector3(jointPos.X,jointPos.Y,jointPos.Z);
             }
         });
     }
@@ -46,5 +50,10 @@ public class TestTracker : MonoBehaviour
     public Quaternion[] SendBoneQua()
     {
         return BoneQua;
+    }
+
+    public Vector3 SendBasePos()
+    {
+        return adjustPos;
     }
 }

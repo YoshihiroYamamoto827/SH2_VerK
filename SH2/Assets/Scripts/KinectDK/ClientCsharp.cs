@@ -25,11 +25,15 @@ public class ClientCsharp : MonoBehaviour
     public class QuaAr
     {
         public QuaList[] qualist;
+        public Vector3 BasePos;
     }
 
+    //Boneの回転を代入する変数、アバターのアニメータ、アバターの親オブジェクトを宣言
     private Quaternion[] BoneQua;
     private Animator AvatarAnimator;
-    private Transform[] AvatarBone;
+    public GameObject Avatarroot;
+
+    //Websocketを使うための変数とJSONデータをやり取りするためのクラスで変数を宣言
     private WebSocket ws;
     private QuaAr quaar;
 
@@ -38,8 +42,9 @@ public class ClientCsharp : MonoBehaviour
 
     private void Start()
     {
-        //アバターのボーンのTransformを取得
-        AvatarAnimator = GameObject.Find("SimpleSkeleton2").GetComponent<Animator>();
+        //アバターの親オブジェクトとボーンのTransformを取得
+        //Avatarroot = GameObject.Find("SimpleSkeleton2");
+        AvatarAnimator = Avatarroot.GetComponent<Animator>();
 
         //サーバから受信する用のJSONデータの形式と回転を格納する配列を宣言
         quaar = new QuaAr();
@@ -65,7 +70,7 @@ public class ClientCsharp : MonoBehaviour
                 {
                     Debug.Log(e.Data);
                     JsonUtility.FromJsonOverwrite(e.Data.ToString(),quaar);
-                    Debug.Log(quaar.qualist[1].X);
+                    //Debug.Log(quaar.qualist[1].X);
                     foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
                     {
                         var jointId = pair.Value;
@@ -75,6 +80,7 @@ public class ClientCsharp : MonoBehaviour
                         BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
                         BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
                         AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarの各関節に回転を当て込む
+                        Avatarroot.transform.localPosition = quaar.BasePos;
                     }
 
                 };

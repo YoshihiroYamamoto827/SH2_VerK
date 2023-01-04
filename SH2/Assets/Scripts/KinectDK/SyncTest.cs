@@ -26,6 +26,7 @@ public class SyncTest : MonoBehaviour
     public class QuaAr
     {
         public QuaList[] qualist;
+        public Vector3 BasePos;
     }
 
     private Quaternion[] BoneQua;
@@ -33,7 +34,6 @@ public class SyncTest : MonoBehaviour
     private WebSocket ws;
     private QuaAr quaar;
 
-    private Vector3 ObjPosB, ObjPosA;
     bool wsopen;
     int i, j;
 
@@ -58,6 +58,7 @@ public class SyncTest : MonoBehaviour
             while (true)
             {
                 BoneQua = ATscript.SendBoneQua();
+                quaar.BasePos = ATscript.SendBasePos();
                 for (i = 0; i < Define.BoneNum; i++)
                 {
                     quaar.qualist[i].X = double.Parse((BoneQua[i].x).ToString("f3"));
@@ -65,6 +66,7 @@ public class SyncTest : MonoBehaviour
                     quaar.qualist[i].Z = double.Parse((BoneQua[i].z).ToString("f3"));
                     quaar.qualist[i].W = double.Parse((BoneQua[i].w).ToString("f3"));
                     //Debug.Log(quaar.qualist[i].X);
+                    Debug.Log(quaar.BasePos);
                 }
 
                 var json = JsonUtility.ToJson(quaar);
