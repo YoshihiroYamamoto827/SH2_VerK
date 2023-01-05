@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public class ClientCsharp : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class ClientCsharp : MonoBehaviour
     private QuaAr quaar;
 
     bool wsopen,synced;
+    private Text Ptext;
     int i, j;
 
     private void Start()
@@ -52,9 +54,12 @@ public class ClientCsharp : MonoBehaviour
         for (i = 0; i < Define.BoneNum; i++) quaar.qualist[i] = new QuaList();
         BoneQua = new Quaternion[Define.BoneNum];
 
+        Ptext = GameObject.Find("PelvisPosition").GetComponent<Text>();
         wsopen = false;
 
-        Task B = BoneReceived();
+        SyncStart();
+
+        //Task B = BoneReceived();
 
     }
 
@@ -80,9 +85,9 @@ public class ClientCsharp : MonoBehaviour
                         BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
                         BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
                         AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarÇÃäeä÷êﬂÇ…âÒì]ÇìñÇƒçûÇﬁ
-                        Avatarroot.transform.localPosition = quaar.BasePos;
                     }
-
+                    Avatarroot.transform.localPosition = quaar.BasePos;
+                    Ptext.text = quaar.BasePos.ToString();
                 };
             }
 
@@ -91,8 +96,28 @@ public class ClientCsharp : MonoBehaviour
 
     private void Update()
     {
-        
+        if (wsopen)
+        {
+            ws.OnMessage += (sender, e) =>
+            {
+                Debug.Log(e.Data);
+                JsonUtility.FromJsonOverwrite(e.Data.ToString(), quaar);
+                //Debug.Log(quaar.qualist[1].X);
+                foreach (KeyValuePair<HumanBodyBones, int> pair in this.boneperseint)
+                {
+                    var jointId = pair.Value;
 
+                    BoneQua[jointId].x = (float)quaar.qualist[jointId].X;
+                    BoneQua[jointId].y = (float)quaar.qualist[jointId].Y;
+                    BoneQua[jointId].z = (float)quaar.qualist[jointId].Z;
+                    BoneQua[jointId].w = (float)quaar.qualist[jointId].W;
+                    AvatarAnimator.GetBoneTransform(pair.Key).rotation = BoneQua[jointId]; // HumanoidAvatarÇÃäeä÷êﬂÇ…âÒì]ÇìñÇƒçûÇﬁ
+                }
+                Avatarroot.transform.localPosition = quaar.BasePos;
+                Ptext.text = quaar.BasePos.ToString();
+            };
+        }
+       
     }
 
     public void SyncStart()

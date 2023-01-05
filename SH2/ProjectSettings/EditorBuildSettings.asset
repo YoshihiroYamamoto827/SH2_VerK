@@ -11,27 +11,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/HouseScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/VRtest/Scenes/Title.unity
     guid: b8eb8a7842b428846921412b3db50368
   - enabled: 0
-    path: Assets/aDemo/Title.unity
-    guid: da81b1507055f9a4791c139e184a532c
-  - enabled: 1
-    path: Assets/aDemo/GameScene.unity
-    guid: f165be872b1bf0640b9654596e2cb3ca
-  - enabled: 0
     path: Assets/Scenes/MapPreviewScene.unity
     guid: 76df545a5d33d7849961299530742ff0
-  - enabled: 1
+  - enabled: 0
     path: Assets/VRtest/Scenes/End.unity
     guid: 5d6e49c119cdd074e8739c9f403b83c8
   - enabled: 0
     path: Assets/VRtest/Scenes/Game.unity
     guid: 063c333f3440c4c4baa61edcae8eb524
-  - enabled: 0
-    path: Assets/aDemo/EndScene.unity
-    guid: a3760f61396a0e242ad7bf948fe8aac6
+  - enabled: 1
+    path: Assets/Scenes/ReceivedScene.unity
+    guid: 45a9712ed0b4dfe49a05043f3aac7b9c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5378bf04098c5874c92b918a4d9798a6, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 02e8110794f71634fa7bd1d96f3f77c5, type: 2}

@@ -199,4 +199,9 @@ public class AvatarTracker : MonoBehaviour
     {
         return BoneQua;
     }
+
+    public Vector3 SendBasePos()
+    {
+        return adjustPos;
+    }
 }
